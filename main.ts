@@ -1,7 +1,5 @@
 /*
 SPREMENLJIVKE
-
-
 */
 let moc = 0
 let popravek = 0
@@ -9,7 +7,12 @@ let svetlost = 0
 let i = 0
 let senzor = 0
 let moc3 = 0
-sensors.gyro3.calibrate()
+
+
+/*
+MISIJE
+*/
+
 
 // MISIJA 2(JAJCA NA OKO)
 brick.buttonDown.onEvent(ButtonEvent.Pressed, function () {
@@ -19,15 +22,18 @@ brick.buttonDown.onEvent(ButtonEvent.Pressed, function () {
     motors.largeC.run(30, 0.7, MoveUnit.Rotations)
     motors.largeBC.tank(100, 100, -3, MoveUnit.Rotations)
 })
+
+
 // MISIJA 1(ŽERJAV)
 brick.buttonUp.onEvent(ButtonEvent.Pressed, function () {
     motors.largeBC.setInverted(true)
     pospesevanje(30)
-    vozi_ravno(40)
-    do_crte(0, 30, 1)
+    vozi_ravno(60)
+    motors.largeBC.tank(30, 30, 0.2, MoveUnit.Rotations)
     motors.stopAll()
-    brick.exitProgram()
 })
+
+
 // MISIJA 4(PUKL)
 brick.buttonLeft.onEvent(ButtonEvent.Pressed, function () {
     motors.largeBC.setInverted(true)
@@ -41,6 +47,8 @@ brick.buttonLeft.onEvent(ButtonEvent.Pressed, function () {
     motors.largeB.run(30, -0.9, MoveUnit.Rotations)
     motors.largeBC.tank(30, 30, 2.4, MoveUnit.Rotations)
 })
+
+
 // MISIJA 3(ORTODONT)
 brick.buttonEnter.onEvent(ButtonEvent.Pressed, function () {
     motors.largeBC.setInverted(true)
@@ -55,12 +63,13 @@ brick.buttonEnter.onEvent(ButtonEvent.Pressed, function () {
     motors.mediumD.run(100, -2, MoveUnit.Rotations)
     motors.largeBC.tank(30, 30, 1, MoveUnit.Rotations)
 })
-// kr tak neki 
+
+
+//KALIBRIRA GYRO 
 brick.buttonRight.onEvent(ButtonEvent.Pressed, function () {
-    motors.largeBC.setInverted(true)
-    motors.largeBC.tank(30, 30, 3, MoveUnit.Rotations)
-    motors.largeBC.tank(100, 100, -3.5, MoveUnit.Rotations)
+    sensors.gyro3.calibrate()
 })
+
 
 /*
 
@@ -71,6 +80,7 @@ PODPROGRAM ZA VOŽNJO NARAVNOST
 
 */
 function vozi_ravno(cm: number) {
+    sensors.gyro3.reset()
     motors.resetAll()
     while (Math.abs(motors.largeB.angle()) < 360 * (cm / 29)) {
         popravek = sensors.gyro3.angle() * 1.3
@@ -83,6 +93,10 @@ function vozi_ravno(cm: number) {
 }
 
 
+/*
+PODPROGRAM ZA POSPEŠEVANJE
+*/
+
 function pospesevanje (maxmoc: number) {
     while (moc < maxmoc) {
         motors.largeBC.setBrake(false)
@@ -92,6 +106,10 @@ function pospesevanje (maxmoc: number) {
     }
 }
 
+
+/*
+PODPROGRAM ZA VOŽNJO DO ČRTE
+*/
 
 
 function do_crte (svetlost: number, moc: number, senzor: number) {
@@ -114,7 +132,7 @@ function do_crte (svetlost: number, moc: number, senzor: number) {
 
 /*
 PODPROGRAM ZA IZPIS POMEMBNIH VREDNOSTI SENZORJEV
-
+*/
 
 
 
@@ -125,4 +143,4 @@ forever(function () {
     brick.showNumber(sensors.color2.light(LightIntensityMode.Reflected), 4)
     brick.showString("Gyro 3", 5)
     brick.showNumber(sensors.gyro3.angle(), 6)
-})*/
+})
