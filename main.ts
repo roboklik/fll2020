@@ -1,4 +1,17 @@
-// MISIJA 3(JAJCA NA OKO)
+/*
+SPREMENLJIVKE
+
+
+*/
+let moc = 0
+let popravek = 0
+let svetlost = 0
+let i = 0
+let senzor = 0
+let moc3 = 0
+sensors.gyro3.calibrate()
+
+// MISIJA 2(JAJCA NA OKO)
 brick.buttonDown.onEvent(ButtonEvent.Pressed, function () {
     motors.largeBC.setInverted(true)
     pospesevanje(20)
@@ -6,37 +19,16 @@ brick.buttonDown.onEvent(ButtonEvent.Pressed, function () {
     motors.largeC.run(30, 0.7, MoveUnit.Rotations)
     motors.largeBC.tank(100, 100, -3, MoveUnit.Rotations)
 })
-// MISIJA 1()
+// MISIJA 1(ŽERJAV)
 brick.buttonUp.onEvent(ButtonEvent.Pressed, function () {
     motors.largeBC.setInverted(true)
-    pospesevanje(50)
+    pospesevanje(30)
     vozi_ravno(40)
-    do_crte(90, 30, 2)
+    do_crte(0, 30, 1)
     motors.stopAll()
-    control.waitMicros(1000)
-    motors.mediumD.run(30, -2.2, MoveUnit.Rotations)
-    motors.largeBC.tank(25, 25, -0.2, MoveUnit.Rotations)
-    control.waitMicros(2000000)
-    for (i = 0; i < 18; i++) {
-        motors.mediumA.run(100, -0.3, MoveUnit.Rotations)
-        control.waitMicros(20000)
-        motors.mediumA.run(100, 0.3, MoveUnit.Rotations)
-        control.waitMicros(20000)
-    }
-    motors.mediumA.run(100, -1, MoveUnit.Rotations)
-    motors.largeBC.tank(30, 30, -0.1, MoveUnit.Rotations)
-    motors.mediumD.run(30, 3, MoveUnit.Rotations)
-    motors.largeBC.tank(30, 30, -0.2, MoveUnit.Rotations)
-    motors.largeC.run(50, -0.25, MoveUnit.Rotations)
-    motors.mediumA.run(100, -3, MoveUnit.Rotations)
-    motors.largeBC.tank(30, 30, 0.2, MoveUnit.Rotations)
-    motors.largeB.run(10, -0.3, MoveUnit.Rotations)
-    motors.largeBC.tank(10, 10, 0.9, MoveUnit.Rotations)
-    motors.largeBC.tank(30, 30, -1, MoveUnit.Rotations)
-    motors.largeC.run(30, 1, MoveUnit.Rotations)
-    motors.largeBC.tank(100, 100, -2.5, MoveUnit.Rotations)
+    brick.exitProgram()
 })
-// MISIJA 5(PUKL)
+// MISIJA 4(PUKL)
 brick.buttonLeft.onEvent(ButtonEvent.Pressed, function () {
     motors.largeBC.setInverted(true)
     motors.largeBC.tank(30, 30, -3.7, MoveUnit.Rotations)
@@ -49,7 +41,7 @@ brick.buttonLeft.onEvent(ButtonEvent.Pressed, function () {
     motors.largeB.run(30, -0.9, MoveUnit.Rotations)
     motors.largeBC.tank(30, 30, 2.4, MoveUnit.Rotations)
 })
-// MISIJA 2(ORTODONT)
+// MISIJA 3(ORTODONT)
 brick.buttonEnter.onEvent(ButtonEvent.Pressed, function () {
     motors.largeBC.setInverted(true)
     pospesevanje(25)
@@ -63,50 +55,55 @@ brick.buttonEnter.onEvent(ButtonEvent.Pressed, function () {
     motors.mediumD.run(100, -2, MoveUnit.Rotations)
     motors.largeBC.tank(30, 30, 1, MoveUnit.Rotations)
 })
-// MISIJA 4(GIGANTSKI STOLP)
+// kr tak neki 
 brick.buttonRight.onEvent(ButtonEvent.Pressed, function () {
     motors.largeBC.setInverted(true)
     motors.largeBC.tank(30, 30, 3, MoveUnit.Rotations)
     motors.largeBC.tank(100, 100, -3.5, MoveUnit.Rotations)
 })
-let popravek = 0
-let moc = 0
-let svetlost = 0
-let i = 0
-let senzor = 0
-let moc3 = 0
-sensors.gyro3.calibrate()
-function pospesevanje(maxmoc: number) { // na vrhu napišeš do katere moči mora pospeševati. 
-    while (moc < maxmoc) {
-        motors.largeBC.setBrake(false)
-        motors.largeBC.tank(moc, moc) //Moč motorjev natavi na 0. 
-        moc = moc + 2 //Nato pa pospeši za dva. 
-        control.waitMicros(30000) // počaka 30000 mikrosekunde( to je 0.03 sekunde) in nato vse spet ponovi. 
-        // To dela dokler ni pospešil do dane moči ki smo jo prej napisali. 
-    }
-}
-function vozi_ravno(cm: number) {//zgor napišeš koliko cm naj pelje
-    motors.resetAll()//resetira vse motorje
-    while (Math.abs(motors.largeB.angle()) < 360 * (cm / 29)) {//zračuna cm
-        popravek = sensors.gyro3.angle() * 1.5 //popravek je enak kotu gyro senzorja 3
-        motors.largeBC.steer(popravek, 25)//kot popravka napiše not in vozi z močjo 30
-        brick.showString("Popravek", 7)
-        brick.showNumber(popravek, 8)//na koci pokaže popravek
 
+/*
+
+OD TU NAPREJ PODPROGRAMI
+
+
+PODPROGRAM ZA VOŽNJO NARAVNOST
+
+*/
+function vozi_ravno(cm: number) {
+    motors.resetAll()
+    while (Math.abs(motors.largeB.angle()) < 360 * (cm / 29)) {
+        popravek = sensors.gyro3.angle() * 1.3
+        motors.largeBC.steer(popravek, 25)
+        brick.showString("Popravek", 7)
+        brick.showNumber(popravek, 8)
     }
     motors.stopAll()
     motors.largeBC.setBrake(true)
 }
-function do_crte(svetlost: number, moc: number, senzor: number) {
+
+
+function pospesevanje (maxmoc: number) {
+    while (moc < maxmoc) {
+        motors.largeBC.setBrake(false)
+        motors.largeBC.tank(moc, moc)
+        moc = moc + 2
+        control.waitMicros(30000)
+    }
+}
+
+
+
+function do_crte (svetlost: number, moc: number, senzor: number) {
     motors.largeBC.setInverted(true)
-    //če rabimo senzor ena
+    // če rabimo senzor ena
     if (senzor = 1) {
         while (sensors.color1.light(LightIntensityMode.Reflected) < svetlost) {
             motors.largeBC.tank(moc, moc)
         }
         motors.stopAll()
     }
-    //če rabimo senzor dva
+    // če rabimo senzor dva
     if (senzor = 2) {
         while (sensors.color2.light(LightIntensityMode.Reflected) < svetlost) {
             motors.largeBC.tank(moc, moc)
@@ -114,6 +111,13 @@ function do_crte(svetlost: number, moc: number, senzor: number) {
         motors.stopAll()
     }
 }
+
+/*
+PODPROGRAM ZA IZPIS POMEMBNIH VREDNOSTI SENZORJEV
+
+
+
+
 forever(function () {
     brick.showString("Color 1", 1)
     brick.showNumber(sensors.color1.light(LightIntensityMode.Reflected), 2)
@@ -121,4 +125,4 @@ forever(function () {
     brick.showNumber(sensors.color2.light(LightIntensityMode.Reflected), 4)
     brick.showString("Gyro 3", 5)
     brick.showNumber(sensors.gyro3.angle(), 6)
-})
+})*/
