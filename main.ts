@@ -1,3 +1,6 @@
+/*
+MISIJE
+*/
 // MISIJA 2(JAJCA NA OKO)
 brick.buttonDown.onEvent(ButtonEvent.Pressed, function () {
     motors.largeBC.setInverted(true)
@@ -46,7 +49,33 @@ brick.buttonEnter.onEvent(ButtonEvent.Pressed, function () {
 brick.buttonRight.onEvent(ButtonEvent.Pressed, function () {
     sensors.gyro3.calibrate()
 })
-function pospesevanje (maxmoc: number) {
+
+
+/*
+OD TU NAPREJ PODPROGRAMI 
+*/
+
+/*
+PODPROGRAM ZA VOŽNJO NARAVNOST
+*/
+function vozi_ravno(cm: number) {
+    sensors.gyro3.reset()
+    motors.resetAll()
+    while (Math.abs(motors.largeB.angle()) < 360 * (cm / 29)) {
+        popravek = sensors.gyro3.angle() * 1.3
+        motors.largeBC.steer(popravek, 25)
+        brick.showString("Popravek", 7)
+        brick.showNumber(popravek, 8)
+    }
+    motors.stopAll()
+    motors.largeBC.setBrake(true)
+}
+
+
+/*
+PODPROGRAM ZA POSPEŠEVANJE
+*/
+function pospesevanje(maxmoc: number) {
     while (moc < maxmoc) {
         motors.largeBC.setBrake(false)
         motors.largeBC.tank(moc, moc)
@@ -54,7 +83,12 @@ function pospesevanje (maxmoc: number) {
         control.waitMicros(30000)
     }
 }
-function do_crte (svetlost: number, moc: number, senzor: number) {
+
+
+/*
+PODPROGRAM ZA VOŽNJO DO ČRTE
+*/
+function do_crte(svetlost: number, moc: number, senzor: number) {
     motors.largeBC.setInverted(true)
     // če rabimo senzor ena
     if (senzor = 1) {
@@ -72,44 +106,8 @@ function do_crte (svetlost: number, moc: number, senzor: number) {
     }
 }
 /*
- * MISIJE
- */
-/*
- * OD TU NAPREJ PODPROGRAMI
- * 
- * PODPROGRAM ZA VOŽNJO NARAVNOST
- * 
- */
-function vozi_ravno(cm: number) {
-    sensors.gyro3.reset()
-    motors.resetAll()
-    while (Math.abs(motors.largeB.angle()) < 360 * (cm / 29)) {
-        popravek = sensors.gyro3.angle() * 1.3
-        motors.largeBC.steer(popravek, 25)
-        brick.showString("Popravek", 7)
-        brick.showNumber(popravek, 8)
-    }
-    motors.stopAll()
-    motors.largeBC.setBrake(true)
-}
-/*
- * PODPROGRAM ZA POSPEŠEVANJE
- */
-/*
- * PODPROGRAM ZA VOŽNJO DO ČRTE
- */
-/*
- * PODPROGRAM ZA IZPIS POMEMBNIH VREDNOSTI SENZORJEV
- */
-/*
- * SPREMENLJIVKE
- */
-let moc = 0
-let popravek = 0
-let moc3 = 0
-let senzor = 0
-let i = 0
-let svetlost = 0
+PODPROGRAM ZA IZPIS POMEMBNIH VREDNOSTI SENZORJEV
+*/
 forever(function () {
     brick.showString("Color 1", 1)
     brick.showNumber(sensors.color1.light(LightIntensityMode.Reflected), 2)
@@ -118,4 +116,16 @@ forever(function () {
     brick.showString("Gyro 3", 5)
     brick.showNumber(sensors.gyro3.angle(), 6)
 })
-//Haj 
+
+
+/*
+SPREMENLJIVKE
+*/
+let moc = 0
+let popravek = 0
+let moc3 = 0
+let senzor = 0
+let i = 0
+let svetlost = 0
+
+//Čudovito!!
