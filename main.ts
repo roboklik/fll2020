@@ -22,7 +22,7 @@ function vozi_ravno (cm: number) {
 brick.buttonUp.onEvent(ButtonEvent.Pressed, function () {
     motors.largeBC.setInverted(true)
     pospesevanje(30)
-    vozi_ravno(46)
+    vozi_ravno(20)
     motors.largeBC.tank(30, 30, 0.2, MoveUnit.Rotations)
     motors.stopAll()
 })
