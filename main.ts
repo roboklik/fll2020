@@ -6,18 +6,7 @@ brick.buttonDown.onEvent(ButtonEvent.Pressed, function () {
     motors.largeC.run(30, 0.7, MoveUnit.Rotations)
     motors.largeBC.tank(100, 100, -3, MoveUnit.Rotations)
 })
-function vozi_ravno (cm: number) {
-    sensors.gyro3.reset()
-    motors.resetAll()
-    while (Math.abs(motors.largeB.angle()) < 360 * (cm / 29)) {
-        popravek = sensors.gyro3.angle() * 1.3
-        motors.largeBC.steer(popravek, 25)
-        brick.showString("Popravek", 7)
-        brick.showNumber(popravek, 8)
-    }
-    motors.stopAll()
-    motors.largeBC.setBrake(true)
-}
+
 // MISIJA 1(ŽERJAV)
 brick.buttonUp.onEvent(ButtonEvent.Pressed, function () {
     motors.largeBC.setInverted(true)
@@ -82,24 +71,37 @@ function do_crte (svetlost: number, moc: number, senzor: number) {
         motors.stopAll()
     }
 }
-/**
+/*
  * MISIJE
  */
-/**
+/*
  * OD TU NAPREJ PODPROGRAMI
  * 
  * PODPROGRAM ZA VOŽNJO NARAVNOST
+ * 
  */
-/**
+function vozi_ravno(cm: number) {
+    sensors.gyro3.reset()
+    motors.resetAll()
+    while (Math.abs(motors.largeB.angle()) < 360 * (cm / 29)) {
+        popravek = sensors.gyro3.angle() * 1.3
+        motors.largeBC.steer(popravek, 25)
+        brick.showString("Popravek", 7)
+        brick.showNumber(popravek, 8)
+    }
+    motors.stopAll()
+    motors.largeBC.setBrake(true)
+}
+/*
  * PODPROGRAM ZA POSPEŠEVANJE
  */
-/**
+/*
  * PODPROGRAM ZA VOŽNJO DO ČRTE
  */
-/**
+/*
  * PODPROGRAM ZA IZPIS POMEMBNIH VREDNOSTI SENZORJEV
  */
-/**
+/*
  * SPREMENLJIVKE
  */
 let moc = 0
