@@ -10,14 +10,18 @@ brick.buttonDown.onEvent(ButtonEvent.Pressed, function () {
     motors.largeBC.tank(100, 100, -3, MoveUnit.Rotations)
 })
 
-// MISIJA 1(ŽERJAV)
+
+// MISIJA 1(ORANŽNA ŽIRAFA)
 brick.buttonUp.onEvent(ButtonEvent.Pressed, function () {
     motors.largeBC.setInverted(true)
     pospesevanje(30)
-    vozi_ravno(20)
-    motors.largeBC.tank(30, 30, 0.2, MoveUnit.Rotations)
+    vozi_ravno(40)
+    do_crte(0, 30, 2)
+    motors.largeBC.tank(30, 30, 0.3, MoveUnit.Rotations)
     motors.stopAll()
 })
+
+
 // MISIJA 4(PUKL)
 brick.buttonLeft.onEvent(ButtonEvent.Pressed, function () {
     motors.largeBC.setInverted(true)
@@ -31,6 +35,8 @@ brick.buttonLeft.onEvent(ButtonEvent.Pressed, function () {
     motors.largeB.run(30, -0.9, MoveUnit.Rotations)
     motors.largeBC.tank(30, 30, 2.4, MoveUnit.Rotations)
 })
+
+
 // MISIJA 3(ORTODONT)
 brick.buttonEnter.onEvent(ButtonEvent.Pressed, function () {
     motors.largeBC.setInverted(true)
@@ -45,6 +51,8 @@ brick.buttonEnter.onEvent(ButtonEvent.Pressed, function () {
     motors.mediumD.run(100, -2, MoveUnit.Rotations)
     motors.largeBC.tank(30, 30, 1, MoveUnit.Rotations)
 })
+
+
 // KALIBRIRA GYRO
 brick.buttonRight.onEvent(ButtonEvent.Pressed, function () {
     sensors.gyro3.calibrate()
