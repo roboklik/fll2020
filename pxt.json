@@ -1,5 +1,6 @@
 {
     "name": "fll2020",
+    "version": "0.0.1",
     "description": "",
     "dependencies": {
         "ev3": "*"
